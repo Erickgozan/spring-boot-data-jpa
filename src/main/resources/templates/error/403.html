@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head" />
+<body>
+	<header th:replace="layout/layout :: header" />
+	<div class="container py-4">
+		<div class="card bg-danger text-white">
+			<div class="card-header">Error: <strong th:text="${status}"></strong>. <span th:text="#{text.security.error.403.titulo}"> Acceso denegado</span></div>
+			<div class="card-body">
+				<h5 class="card-title"><span th:text="#{text.security.error.403.permiso(${#authentication.name})}"></span></h5>
+				<a th:href="@{/listar}" class="btn btn-outline-light" th:utext="#{text.security.error.403.volver}">&laquo; Volver</a>
+			</div>
+		</div>
+
+	</div>
+
+	<footer th:replace="layout/layout :: footer" />
+</body>
+</html>
+<!--<h2>Oop! Ha ocurrido un error</h2>
+	<div th:text="${error}"></div>
+	<div th:text="${status}"></div>
+	<div th:text="${timestamp}"></div>
+	<hr>
+	<div th:text="'La ruta '+${path}+' no se encontro'"></div>-->

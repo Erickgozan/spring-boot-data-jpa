@@ -1,0 +1,96 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title th:text="'Spring boot mvc '+${titulo}" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
+</head>
+
+<body>
+  <!--Navbar--->
+  <header th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Spring boot</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" th:text="#{text.menu.home}">Home<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/listar}" th:text="#{text.menu.customer}">Lista de clientes</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-rith">
+          <li sec:authorize="!isAuthenticated()">
+            <a class="btn btn-outline-info" th:href="@{/login}" th:text="#{text.menu.signin}">Iniciar sesión</a>
+          </li>
+          <li sec:authorize="isAuthenticated()" class="dropdown show">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span sec:authentication="name"></span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenulink">
+                <form th:action="@{/logout}" method="POST">
+                  <button class="dropdown-item" type="submit" th:text="#{text.menu.signout}">Cerrar sesión</button>
+                  <!--Parametro de seguridad Cross-site request forgery-->
+                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                </form>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-rith ml-2">
+          <li class="dropdown show">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span th:text="#{text.locale.language}"></span></button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenulink">
+                <a th:href="@{/locale(lang=es_ES)}" class="dropdown-item" th:text="#{text.locale.es}">ES</a>
+                <a th:href="@{/locale(lang=en_US)}" class="dropdown-item" th:text="#{text.locale.en}">EN</a>
+                <a th:href="@{/locale(lang=de_DE)}" class="dropdown-item" th:text="#{text.locale.de}">DE</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+    <div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+  </header>
+  <!-- Contenido principal -->
+  <div class="container"></div>
+  <!-- Footer -->
+  <footer th:fragment="footer" class="container text-center">
+    <hr />
+    <img alt="spring" th:src="@{/img/springYthymeleaf.png}" height="100" width="250" />
+    <br />
+    <p sec:authorize="isAuthenticated()" ><span th:text="#{text.footer.user}"></span>
+      |
+      <span sec:authentication="name" th:text="#{text.footer.roles}"></span>
+     <span sec:authentication="principal.authorities"></span></p>
+
+    <p th:utext="#{text.footer.powered}">Power by <a href="https://spring.io/projects/spring-boot">Spring boot</a> and <a
+        href="http://www.thymeleaf.org">Thymeleaf</a></p>
+      <p th:utext="#{text.footer.copy}"></p>
+
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery-ui.min.js}"></script>
+  </footer>
+</body>
+
+</html>
